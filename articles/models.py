@@ -45,6 +45,7 @@ class ArticleRubric(models.Model):
         verbose_name = 'Тема'
         verbose_name_plural = 'Тематики статьи'
         ordering = ['id', ]
+        unique_together = ('article', 'rubric')
 
     def __str__(self):
         return f"article_id: {self.article},  rubric_id: {self.rubric}"
