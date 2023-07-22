@@ -40,6 +40,8 @@ class ArticleRubric(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', related_name='relations')
     rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE, verbose_name='Рубрика', related_name='relations')
     is_main = models.BooleanField(null=True, blank=True, verbose_name='Основная')
+    #
+    objects = models.Manager()
 
     class Meta:
         verbose_name = 'Тема'
@@ -49,3 +51,9 @@ class ArticleRubric(models.Model):
 
     def __str__(self):
         return f"article_id: {self.article},  rubric_id: {self.rubric}"
+
+    def save(self, *args, **kwargs):
+        # Меняет незаполненное поле на "Нет".
+        if self.is_main is None:
+            self.is_main = False
+        return super(ArticleRubric, self).save(*args, **kwargs)
