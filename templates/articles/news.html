@@ -15,8 +15,23 @@
               <a href="#">{{ article.title }}</a>
             </h4>
             <p class="card-text">{{ article.text }}</p>
-            {% for scope in article.scopes.all %}
-              <span class="badge {% if scope.is_main %}badge-primary{% else %}badge-secondary{% endif %}">{{ scope.tag.name }}</span>
+            <!-- Первой печатает основную рубрику. -->
+            {% for scope in article.relations.all %}
+              {% if scope.is_main %}
+                <span class="badge badge-primary">{{ scope.rubric.name }}</span>
+              {% endif %}
+            {% endfor %}
+            <!-- Далее печатает все неосновные рубрики (в алфавитном порядке). -->
+            {% for scope in article.relations.all %}
+              {% if not scope.is_main %}
+                <span class="badge badge-secondary">{{ scope.rubric.name }}</span>
+              {% endif %}
+
+              <!-- Вариант от преподавателя. -->
+              <!-- <span
+                class="badge {% if scope.is_main %}badge-primary{% else %}badge-secondary{% endif %}">{{ scope.rubric }}
+               </span>-->
+
             {% endfor %}
           </div>
         </div>
